@@ -1,4 +1,5 @@
 #include "Objective.h"
+
 #include "Player.h"
 
 using namespace sr;

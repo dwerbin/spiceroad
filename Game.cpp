@@ -8,8 +8,8 @@
 
 #include "Action.h"
 #include "AsciiPrinter.h"
+#include "BasicStrategy.h"
 #include "SpiceMap.h"
-#include "Strategy.h"
 #include "ansi.h"
 
 using namespace sr;

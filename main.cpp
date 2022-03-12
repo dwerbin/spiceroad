@@ -3,9 +3,9 @@
 #include <string>
 
 #include "Action.h"
+#include "BasicStrategy.h"
 #include "Game.h"
 #include "Objective.h"
-#include "Strategy.h"
 
 using namespace sr;
 

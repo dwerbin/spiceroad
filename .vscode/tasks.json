@@ -1,0 +1,49 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build",
+			"type": "process",
+			"command": "make",
+			"options": {
+				"cwd": "${workspaceRoot}/build"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": [
+				{
+					"base": "$gcc",
+					"fileLocation": [
+						"relative",
+						"${workspaceRoot}/build"
+					]
+				}
+			],
+			"promptOnClose": true
+		},
+		{
+			"type": "cppbuild",
+			"label": "C/C++: cpp.exe générer le fichier actif",
+			"command": "C:\\MinGW\\bin\\g++.exe",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"-Wall",
+				"-std=c++17",
+				"${workspaceFolder}\\*.cpp",
+				"-o",
+				"${workspaceFolder}\\spiceroad.exe"
+			],
+			"options": {
+				"cwd": "C:\\MinGW\\bin"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "compilateur : C:\\MinGW\\bin\\g++.exe"
+		}
+	]
+}

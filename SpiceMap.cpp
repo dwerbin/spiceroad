@@ -56,6 +56,7 @@ bool SpiceMap::operator<(const SpiceMap& that) const {
         }
         return quantities[s] < that.quantities[s];
     }
+    return false;
 }
 
 int SpiceMap::get_quantity(Spice spice) const

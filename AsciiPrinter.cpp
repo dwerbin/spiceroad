@@ -79,7 +79,7 @@ std::ostream& AsciiPrinter::print(std::ostream& stream, const Game& game) {
 }
 
 std::ostream& AsciiPrinter::print(std::ostream& stream, const Player& player) {
-    std::vector<Spice> v = std::move(player.get_caravan().to_vector(true));
+    std::vector<Spice> v(player.get_caravan().to_vector(true));
     stream << " ┌─────────────┐" << std::endl;
     stream << " | C ";
     for(unsigned int i=0; i<5; ++i) {
@@ -125,7 +125,7 @@ std::ostream& AsciiPrinter::print(std::ostream& stream, const Buyable* buyable, 
         return print(stream, buyable->get_merchant(), line);
     } else {
         unsigned int first_index = (line-8) * 3;
-        std::vector<Spice> v = std::move(buyable->get_deposit().to_vector(true));
+        std::vector<Spice> v(buyable->get_deposit().to_vector(true));
         stream << "  ";
         print_item(stream, v, first_index);
         print_item(stream, v, first_index + 1);
@@ -156,7 +156,7 @@ std::ostream &AsciiPrinter::_print(std::ostream &stream, const Production *produ
     if (production == nullptr) {
         return stream << "         ";
     }
-    std::vector<Spice> v = std::move(production->get_spice_map().to_vector(true));
+    std::vector<Spice> v(production->get_spice_map().to_vector(true));
     switch (line)
     {
     case 0:
@@ -185,8 +185,8 @@ std::ostream& AsciiPrinter::_print(std::ostream& stream, const Trade* trade, uns
     if (trade == nullptr) {
         return stream << "         ";
     }
-    std::vector<Spice> v_minus = std::move(trade->get_spice_map().to_vector(false));
-    std::vector<Spice> v_plus  = std::move(trade->get_spice_map().to_vector(true));
+    std::vector<Spice> v_minus(trade->get_spice_map().to_vector(false));
+    std::vector<Spice> v_plus (trade->get_spice_map().to_vector(true));
     switch (line)
     {
     case 0:
@@ -248,7 +248,7 @@ std::ostream& AsciiPrinter::print(std::ostream& stream, const Objective* objecti
     if (objective == nullptr) {
         return stream << "         ";
     }
-    std::vector<Spice> v = std::move(objective->get_spice_map().to_vector(false));
+    std::vector<Spice> v(objective->get_spice_map().to_vector(false));
     switch (line)
     {
     case 0:

@@ -132,7 +132,6 @@ Action* BasicStrategy::play_turn(const Game& game, const Player& player) {
                      "discard pile..."
                   << std::endl;
     }
-
     return new SleepAction();
 }
 
@@ -153,7 +152,9 @@ Action* BasicStrategy::try_to_apply_all_combination(
             unsigned int next_value = next_caravan.get_value();
             if ((next_distance < action_distance) ||
                 ((next_distance == action_distance) &&
-                 (action_value != nullptr) && (next_value > *action_value))) {
+                 (action_value != nullptr) && (next_value > *action_value) &&
+                 (production->get_spice_map().get_quantity(Spice::yellow) ==
+                  production->get_spice_map().get_value()))) {
                 delete action;
                 action = new ProduceAction(production);
                 action_distance = next_distance;

@@ -1,3 +1,6 @@
+#ifndef __SR_TIMER_H__
+#define __SR_TIMER_H__
+
 #include <chrono>
 
 namespace sr {
@@ -18,3 +21,5 @@ class Timer {
 };
 
 }  // namespace sr
+
+#endif  // __SR_TIMER_H__

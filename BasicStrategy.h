@@ -10,6 +10,9 @@ class Objective;
 class Merchant;
 class Trade;
 
+// mean :
+//        51.24 turns
+//        68.53 points
 class BasicStrategy : public Strategy {
    public:
     BasicStrategy();

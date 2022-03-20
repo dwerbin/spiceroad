@@ -89,7 +89,7 @@ Game::Game()
     // std::chrono::duration<double> diff = (end - start);
     // unsigned seed = (unsigned)(diff.count() * 1000.0);
     // unsigned seed = 3676707492;
-    static unsigned seed = 329802;
+    static unsigned seed = 0;
     std::default_random_engine generator(seed);
     std::cout << "RAND SEED : " << seed << std::endl;
     seed++;
@@ -148,15 +148,16 @@ void Game::execute() {
             exit(0);
         }
         //-------------------
-        // printer.print(std::cout, *this);
-        // std::cout << player.get_name() << "'s turn:" << std::setw(41) <<
-        // std::right << "R" << get_round_id() << "T" << get_turn_id() <<
-        // std::endl; printer.print(std::cout, player);
+        printer.print(std::cout, *this);
+        std::cout << player.get_name() << "'s turn:" << std::setw(41)
+                  << std::right << "R" << get_round_id() << "T" << get_turn_id()
+                  << std::endl;
+        printer.print(std::cout, player);
         //-------------------
 
         std::shared_ptr<Action> action(player.play_turn(*this));
 
-#if 1
+#if 0
         std::cout << "T" << std::setfill('0') << std::setw(3) << get_turn_id()
                   << "R" << std::setw(2) << get_round_id() << std::setfill(' ')
                   << std::endl;
@@ -165,7 +166,7 @@ void Game::execute() {
                 dynamic_cast<const BasicStrategy*>(player.get_strategy())) {
             std::cout << "       -> F:" << *basic->get_focus() << std::endl;
         }
-        std::cout << "          " << *action;
+        std::cout << "          " << (*action);
         if (ClaimAction* claim = dynamic_cast<ClaimAction*>(action.get())) {
             const Objective* claimable =
                 get_claimable(claim->get_claimable_index());

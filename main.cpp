@@ -5,37 +5,69 @@
 #include "Action.h"
 #include "BasicStrategy.h"
 #include "Game.h"
+#include "InteractiveStrategy.h"
 #include "Objective.h"
+#include "Timer.h"
 
 using namespace sr;
 
-int main(int argc, char** argv) {
-    for (unsigned int i = 0; i < 1000000; ++i) {
-        std::cout << "Start Game #" << i << std::endl;
-        // Player jean(std::string("Flo"), new InteractiveStrategy());
-        Player robert(std::string("Robert"), new BasicStrategy());
+void show_results(std::ostream& stream, const Game& game) {
+    // display the points for each players
+    std::vector<Player> players = game.get_players();
+    std::sort(players.begin(), players.end(),
+              [&](const Player& p0, const Player& p1) {
+                  return (p0.get_score() < p1.get_score());
+              });
+    for (const Player& player : players) {
+        stream.precision(2);
+        stream << player.get_name() << "\t" << player.get_objectives().size()
+               << " objectives\t" << game.get_round_id() + 1 << " turns\t"
+               << player.get_score() << " points\t" << std::fixed
+               << ((double)player.get_score()) /
+                      ((double)(game.get_round_id() + 1))
+               << " points per turns\t"
+               << "\n";
+    }
+}
 
+/*
+int main(int argc, char** argv) {
+    for (unsigned int i = 0; i < 1; ++i) {
+        std::cout << "Start Game #" << i << std::endl;
         Game game;
-        // game.add_player(jean);
-        game.add_player(robert);
+
+        // Player p1(std::string("Flo"), new InteractiveStrategy());
+        // game.add_player(p1);
+
+        Player p2(std::string("Robert"), new BasicStrategy());
+        game.add_player(p2);
 
         game.prepare();
+        Timer t;
         game.execute();
+        std::cout << t.duration().count() << "ms" << std::endl;
 
-        // display the points for each players
-        std::vector<Player> players = game.get_players();
-        std::sort(players.begin(), players.end(),
-                  [&](const Player& p0, const Player& p1) {
-                      return (p0.get_score() < p1.get_score());
-                  });
-        for (const Player& player : players) {
-            std::cout << player.get_name() << "\t"
-                      << player.get_objectives().size() << " objectives\t"
-                      << player.get_score() << " points"
-                      << "\n";
-        }
+        show_results(std::cout, game);
         std::cout << "End   Game #" << i << std::endl;
     }
+
+    return 0;
+}
+*/
+
+int main(int argc, char** argv) {
+    Game game;
+
+    Player p1(std::string("Flo"), new InteractiveStrategy());
+    game.add_player(p1);
+
+    Player p2(std::string("Robert"), new BasicStrategy());
+    game.add_player(p2);
+
+    game.prepare();
+    game.execute();
+
+    show_results(std::cout, game);
 
     return 0;
 }

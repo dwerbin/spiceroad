@@ -6,6 +6,7 @@
 #include "BasicStrategy.h"
 #include "Game.h"
 #include "InteractiveStrategy.h"
+#include "NCursesRenderer.h"
 #include "Objective.h"
 #include "Timer.h"
 
@@ -65,6 +66,9 @@ int main(int argc, char** argv) {
     game.add_player(p2);
 
     game.prepare();
+    NCursesRenderer renderer;
+    renderer.render(game);
+
     game.execute();
 
     show_results(std::cout, game);

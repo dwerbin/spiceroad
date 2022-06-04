@@ -82,17 +82,19 @@ Game::Game()
     }
 
     // shuffle the cards
-    // std::random_device rd;
-    // std::mt19937 generator(rd());
+    std::random_device rd;
+    std::mt19937 generator(rd());
     // static auto start = std::chrono::high_resolution_clock::now();
     // auto end = std::chrono::high_resolution_clock::now();
     // std::chrono::duration<double> diff = (end - start);
     // unsigned seed = (unsigned)(diff.count() * 1000.0);
     // unsigned seed = 3676707492;
-    static unsigned seed = 0;
-    std::default_random_engine generator(seed);
-    std::cout << "RAND SEED : " << seed << std::endl;
-    seed++;
+
+    // static unsigned seed = 0;
+    // std::default_random_engine generator(seed);
+    // std::cout << "RAND SEED : " << seed << std::endl;
+    // seed++;
+
     std::shuffle(objective_deck.begin(), objective_deck.end(), generator);
     std::shuffle(merchant_deck.begin(), merchant_deck.end(), generator);
 }

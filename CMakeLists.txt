@@ -3,6 +3,13 @@ project(spiceroad)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+
+set(CURSES_NEED_NCURSES TRUE)
+set(CURSES_NEED_WIDE TRUE)
+
+include(FindCurses)
+find_package(Curses REQUIRED)
+
 file(GLOB CPP_SOURCES 
     ${PROJECT_SOURCE_DIR}/*.cpp)
 file(GLOB C_SOURCES
@@ -18,6 +25,7 @@ else()
   target_compile_options(${PROJECT_NAME} PRIVATE -g -Wall -Wno-long-long -pedantic)
 endif()
 
+target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})
 target_include_directories(${PROJECT_NAME} PRIVATE 
     . 
 )

@@ -62,7 +62,31 @@
 			"ratio": "cpp",
 			"__locale": "cpp",
 			"__config": "cpp",
-			"__nullptr": "cpp"
+			"__nullptr": "cpp",
+			"__bit_reference": "cpp",
+			"__bits": "cpp",
+			"__debug": "cpp",
+			"__errc": "cpp",
+			"__hash_table": "cpp",
+			"__mutex_base": "cpp",
+			"__node_handle": "cpp",
+			"__split_buffer": "cpp",
+			"__string": "cpp",
+			"__threading_support": "cpp",
+			"__tree": "cpp",
+			"__tuple": "cpp",
+			"bitset": "cpp",
+			"cinttypes": "cpp",
+			"complex": "cpp",
+			"condition_variable": "cpp",
+			"csignal": "cpp",
+			"ios": "cpp",
+			"list": "cpp",
+			"locale": "cpp",
+			"mutex": "cpp",
+			"shared_mutex": "cpp",
+			"stack": "cpp",
+			"variant": "cpp"
 		}
 	}
 }

@@ -194,6 +194,7 @@ void Game::pop_claimable(unsigned int index) {
     claimables.push_back(objective_deck.front());
     objective_deck.pop_front();
 }
+
 void Game::pop_buyable(unsigned int index) {
     buyables.erase(buyables.begin() + index);
     buyables.emplace_back(merchant_deck.front());

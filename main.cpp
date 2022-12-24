@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iostream>
+#include <random>
 #include <string>
 
 #include "Action.h"
@@ -42,7 +43,7 @@ int main(int argc, char** argv) {
         Player p2(std::string("Robert"), new BasicStrategy());
         game.add_player(p2);
 
-        game.prepare();
+        game.prepare(i);
         Timer t;
         game.execute();
         std::cout << t.duration().count() << "ms" << std::endl;
@@ -55,6 +56,16 @@ int main(int argc, char** argv) {
 }
 */
 
+unsigned generate_random_seed() {
+    std::random_device rd;
+    std::mt19937 generator(rd());
+    static auto start = std::chrono::high_resolution_clock::now();
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> diff = (end - start);
+    unsigned seed = (unsigned)(diff.count() * 1000.0);
+    return seed;
+}
+
 int main(int argc, char** argv) {
     Game game;
 
@@ -64,7 +75,7 @@ int main(int argc, char** argv) {
     Player p2(std::string("Robert"), new BasicStrategy());
     game.add_player(p2);
 
-    game.prepare();
+    game.prepare(generate_random_seed());
     game.execute();
 
     show_results(std::cout, game);

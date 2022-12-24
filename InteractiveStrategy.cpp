@@ -4,12 +4,26 @@
 #include <unordered_set>
 
 #include "Action.h"
+#include "Game.h"
 #include "Merchant.h"
 #include "Player.h"
 
 using namespace sr;
 
 Action* InteractiveStrategy::play_turn(const Game& game, const Player& player) {
+    Action* action = nullptr;
+    do {
+        if (action != nullptr) {
+            delete action;
+            std::cout << "INVALID ACTION ! TRY ANOTHER ACTION !" << std::endl;
+        }
+        action = play_turn_internal(game, player);
+    } while (action == nullptr || !(action->valid(game, player)));
+    return action;
+}
+
+Action* InteractiveStrategy::play_turn_internal(const Game& game,
+                                                const Player& player) {
 #if 0
     std::cout << player.get_name() << " turn :" << std::endl;
     // std::cout << *(game.get_buyable(0)->get_merchant()) << "\t\t" << std::endl;
@@ -70,12 +84,11 @@ Action* InteractiveStrategy::play_turn(const Game& game, const Player& player) {
         std::cout << player.get_caravan() << std::endl;
     }
 #endif  //
-    while (true) {
+    Action* result = nullptr;
+    while (result == nullptr) {
         std::cout << "Choose : " << std::endl;
-        std::cout << " 'c' : claim" << std::endl;
-        std::cout << " 'b' : buy" << std::endl;
-        std::cout << " 'p' : play" << std::endl;
-        std::cout << " 's' : sleep" << std::endl;
+        std::cout << " 'c' : claim  | 'p' : play " << std::endl;
+        std::cout << " 'b' : buy    | 's' : sleep" << std::endl;
         std::string line;
         getline(std::cin, line);
         char c = ' ';
@@ -84,18 +97,26 @@ Action* InteractiveStrategy::play_turn(const Game& game, const Player& player) {
         }
         switch (c) {
             case 'c':
-                return claim(game, player);
+                result = claim(game, player);
+                break;
             case 'b':
-                return buy(game, player);
+                result = buy(game, player);
+                break;
             case 'p':
-                return play(game, player);
+                result = play(game, player);
+                break;
             case 's':
-                return sleep(game, player);
+                result = sleep(game, player);
+                break;
+            case 'q':
+                exit(0);
+                break;
             default:
                 std::cout << "Unknown action : '" << c << "'" << std::endl;
+                break;
         }
     }
-    return nullptr;
+    return result;
 }
 
 SpiceMap InteractiveStrategy::drop_spice(const Game& game,
@@ -106,6 +127,11 @@ SpiceMap InteractiveStrategy::drop_spice(const Game& game,
 }
 
 Action* InteractiveStrategy::play(const Game& game, const Player& player) {
+    if (player.get_hand().empty()) {
+        std::cout << "Cannot play a card : empty hand" << std::endl;
+        return nullptr;
+    }
+
     std::cout << "Choose index of card in hand : " << std::endl;
     std::string line;
     getline(std::cin, line);
@@ -113,6 +139,11 @@ Action* InteractiveStrategy::play(const Game& game, const Player& player) {
 
     const std::unordered_set<const Merchant*>& hand = player.get_hand();
     std::vector<const Merchant*> hand_vector(hand.begin(), hand.end());
+    if (index >= hand_vector.size()) {
+        std::cout << "Cannot play a card : no card at index=" << index << " / "
+                  << hand_vector.size() << std::endl;
+        return nullptr;
+    }
     const Merchant* card = hand_vector.at(index);
     std::cout << *card << std::endl;
 
@@ -151,7 +182,7 @@ Action* InteractiveStrategy::play(const Game& game, const Player& player) {
                     default:
                         std::cout << "unknown spice : '" << c << "'"
                                   << std::endl;
-                        break;
+                        return nullptr;
                 }
             }
             return new UpgradeAction(card->as_upgrade(), upgrade_map);
@@ -190,6 +221,7 @@ Action* InteractiveStrategy::buy(const Game& game, const Player& player) {
     }
     SpiceMap cost_map(cost);
     std::cout << "cost : " << (cost_map.negate()) << std::endl;
+    // TODO check that we can afford the cost
 
     return new BuyAction(cost);
 }
@@ -201,5 +233,10 @@ Action* InteractiveStrategy::claim(const Game& game, const Player& player) {
     std::string line;
     getline(std::cin, line);
     unsigned int index = atoi(line.c_str());
+    if (index >= game.get_claimables().size()) {
+        std::cout << "Cannot claim a card : no card at index=" << index << " / "
+                  << game.get_claimables().size() << std::endl;
+        return nullptr;
+    }
     return new ClaimAction(index);
 }

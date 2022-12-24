@@ -8,7 +8,7 @@
 using namespace sr;
 
 void SleepAction::execute(Game& game, Player& player) { player.sleep(); }
-bool SleepAction::valid(Game& game, Player& player) const {
+bool SleepAction::valid(const Game& game, const Player& player) const {
     return !(player.get_discard().empty());
 }
 std::ostream& SleepAction::print(std::ostream& stream) const {
@@ -31,7 +31,7 @@ void ClaimAction::execute(Game& game, Player& player) {
         game.remove_silver_coin();
     }
 }
-bool ClaimAction::valid(Game& game, Player& player) const {
+bool ClaimAction::valid(const Game& game, const Player& player) const {
     bool result = (claimable_index < Game::CLAIMABLE_COUNT);
     if (result) {
         const Objective* objective = game.get_claimable(claimable_index);
@@ -50,7 +50,7 @@ void BuyAction::execute(Game& game, Player& player) {
     game.add_deposit(cost);
     game.pop_buyable(buyable_index);
 }
-bool BuyAction::valid(Game& game, Player& player) const {
+bool BuyAction::valid(const Game& game, const Player& player) const {
     unsigned int buyable_index = cost.size();
     bool result = (buyable_index < Game::BUYABLE_COUNT);
     if (result) {
@@ -85,7 +85,7 @@ std::ostream& BuyAction::print(std::ostream& stream) const {
 }
 
 void ProduceAction::execute(Game& game, Player& player) { player.play(*card); }
-bool ProduceAction::valid(Game& game, Player& player) const {
+bool ProduceAction::valid(const Game& game, const Player& player) const {
     return player.get_hand().find(card) != player.get_hand().end();
 }
 std::ostream& ProduceAction::print(std::ostream& stream) const {
@@ -95,7 +95,7 @@ std::ostream& ProduceAction::print(std::ostream& stream) const {
 void TradeAction::execute(Game& game, Player& player) {
     player.play(*card, times);
 }
-bool TradeAction::valid(Game& game, Player& player) const {
+bool TradeAction::valid(const Game& game, const Player& player) const {
     return player.get_hand().find(card) != player.get_hand().end() &&
            player.get_caravan().can_apply(card->get_spice_map(), times);
 }
@@ -106,7 +106,7 @@ std::ostream& TradeAction::print(std::ostream& stream) const {
 void UpgradeAction::execute(Game& game, Player& player) {
     player.play(*card, upgrade_map);
 }
-bool UpgradeAction::valid(Game& game, Player& player) const {
+bool UpgradeAction::valid(const Game& game, const Player& player) const {
     return player.get_hand().find(card) != player.get_hand().end() &&
            player.get_caravan().can_apply(upgrade_map);
 }

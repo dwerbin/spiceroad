@@ -13,6 +13,31 @@ using namespace sr;
 
 BasicStrategy::BasicStrategy() : focus(nullptr) {}
 
+static bool mid_game_passed(const Game& game) {
+    for (const Player& player : game.get_players()) {
+        if (player.get_objectives().size() > 3) {
+            return false;
+        }
+    }
+    return true;
+}
+
+static Action* buy_production_or_upgrade_if_possible(const Game& game,
+                                                     const Player& player) {
+    unsigned int yellow_count =
+        player.get_caravan().get_quantity(Spice::yellow);
+    for (unsigned int yellow_cost = 0; yellow_cost <= yellow_count;
+         ++yellow_cost) {
+        const Buyable* buyable = game.get_buyable(yellow_cost);
+        if (buyable->get_merchant()->as_production() != nullptr ||
+            buyable->get_merchant()->as_upgrade() != nullptr) {
+            std::vector<Spice> cost(yellow_cost, Spice::yellow);
+            return new BuyAction(cost);
+        }
+    }
+    return nullptr;
+}
+
 Action* BasicStrategy::play_turn(const Game& game, const Player& player) {
     const SpiceMap& caravan = player.get_caravan();
     unsigned int focus_index;
@@ -41,6 +66,13 @@ Action* BasicStrategy::play_turn(const Game& game, const Player& player) {
 
     if (caravan.can_apply(focus->get_spice_map())) {
         return new ClaimAction(focus_index);
+    }
+
+    if (mid_game_passed(game)) {
+        Action* action = buy_production_or_upgrade_if_possible(game, player);
+        if (action != nullptr) {
+            return action;
+        }
     }
 
     const std::unordered_set<const Merchant*>& hand = player.get_hand();

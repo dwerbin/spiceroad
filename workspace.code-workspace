@@ -59,7 +59,10 @@
 			"sstream": "cpp",
 			"chrono": "cpp",
 			"set": "cpp",
-			"ratio": "cpp"
+			"ratio": "cpp",
+			"__locale": "cpp",
+			"__config": "cpp",
+			"__nullptr": "cpp"
 		}
 	}
 }

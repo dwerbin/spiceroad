@@ -11,6 +11,8 @@ class InteractiveStrategy : public Strategy {
     SpiceMap drop_spice(const Game& game, const Player& player) override;
 
    protected:
+    Action* play_turn_internal(const Game& game,
+                                           const Player& player);
     Action* play(const Game& game, const Player& player);
     Action* buy(const Game& game, const Player& player);
     Action* sleep(const Game& game, const Player& player);

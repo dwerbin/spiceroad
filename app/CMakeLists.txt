@@ -1,2 +1,2 @@
 add_subdirectory(ascii)
-#add_subdirectory(sdl)
+add_subdirectory(sdl)

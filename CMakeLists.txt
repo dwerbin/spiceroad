@@ -1,34 +1,8 @@
 cmake_minimum_required(VERSION 3.20.0)
 project(spiceroad)
+set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-file(GLOB CPP_SOURCES 
-    ${PROJECT_SOURCE_DIR}/*.cpp)
-file(GLOB C_SOURCES
-    ${PROJECT_SOURCE_DIR}/*.c)
-file(GLOB HEADERS
-    ${PROJECT_SOURCE_DIR}/*.h)
-    
-add_library(${PROJECT_NAME} STATIC ${C_SOURCES} ${CPP_SOURCES} ${HEADERS})
-#generate_export_header(${PROJECT_NAME})
-
-if(MSVC)
-  target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX)
-else()
-  target_compile_options(${PROJECT_NAME} PRIVATE -g -Wall -Wno-long-long -pedantic)
-endif()
-
-target_include_directories(${PROJECT_NAME} PRIVATE 
-    . 
-)
-#target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
-target_compile_definitions(${PROJECT_NAME} PRIVATE DEBUG WIN32_LEAN_AND_MEAN)
-
-SET(APP_EXE ${PROJECT_NAME}ascii)
-add_executable(${APP_EXE} test/main.cpp)
-target_link_libraries(${APP_EXE} PRIVATE ${PROJECT_NAME})
-target_include_directories(${APP_EXE} PRIVATE 
-    .
-)
-target_compile_definitions(${APP_EXE} PRIVATE DEBUG WIN32_LEAN_AND_MEAN)
+add_subdirectory(spicelib)
+add_subdirectory(app)
